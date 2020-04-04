@@ -1,0 +1,148 @@
+<html ng-app="trainingApp">
+<head>
+<title>Training</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: rgb(74, 74, 74);
+	font-family: verdana, sans-serif;
+	font-size: .9em;
+	overflow: hidden;
+}
+
+.dropZone {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: none;
+	z-index: 2;
+}
+.dropZone.enter {
+	border: 4px solid rgb(36,87,47);
+	background-color: rgba(36,255,47,.3);
+	display: block;
+}
+
+.statsContainer {
+	position: absolute;
+	display: flex;
+}
+
+.stat {
+	margin: 5px 10px;
+	color: white;
+}
+
+.imageClassify {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.categoryContainer {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	top: 90%;
+	touch-action: none;
+	background: rgba(0,0,0,.001);
+}
+
+.categoryItem {
+	background: #a6caa6;
+	border: 2px solid darkgreen;
+	margin: 5px 25px;
+	padding: 10px 20px;
+	border-radius: 15px;
+	font-weight: bold;
+	touch-action: none;
+	user-select: none;
+}
+
+.completeContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	color: rgb(255,255,255);
+}
+
+.errorMessage {
+	background-color: #c79393;
+	border: 2px solid #792d2d;
+	border-radius: 5px;
+	width: fit-content;
+	padding: 8px 15px;
+	z-index: 3;
+	position: absolute;
+	bottom: 10%;
+	left: 10%;
+	font-weight: bold;
+	color: #a53030;
+	display: none;
+}
+.errorMessage.show {
+	display: block;
+}
+
+</style>
+
+</head>
+<body ng-controller="trainingCtl">
+
+<div class="statsContainer">
+	<div class="stat">remaining: {{imagesRemain}}</div>
+	<div class="stat">complete: {{imagesComplete}}</div>
+</div>
+
+<img class="imageClassify" ng-src="/image/{{currentImage}}" ng-show="currentImage.length > 0" />
+
+<div class="categoryContainer"
+	id="dragHTML"
+	ontouchstart="dragStart(event)"
+	ontouchend="dragEnd(event)"
+	ontouchmove="drag(event)"
+	onmousedown="dragStart(event)"
+	onmouseup="dragEnd(event)"
+	onmousemove="drag(event)"
+	ng-show="currentImage.length > 0"
+	>
+	
+	<div class="categoryItem" ng-repeat="category in categories" ng-click="selectCategory(category)">
+		{{category}}
+	</div>
+	<div class="categoryItem" ng-click="showNewCategory = !showNewCategory">
+		<span ng-show="showNewCategory == false">New Category</span>
+		<input type="text" ng-model="newCategory" ng-show="showNewCategory == true" ng-blur="saveCategory()" onclick="event.stopPropagation(); event.preventDefault()" />
+	</div>
+	
+</div>
+
+<div class="completeContainer" ng-show="currentImage == null">
+	<h1>No Images</h1>
+</div>
+
+<div class="errorMessage" ng-class="{'show': showError == true}">
+	{{errorMessage}}
+</div>
+
+<div class="dropZone" ng-class="{enter: isOver}" 
+	ondrop="angular.element(this).scope().drop(event)" 
+	ondragover="angular.element(this).scope().dragOver(event)" 
+	ondragleave="angular.element(this).scope().dragLeave(event)">
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="/index.js"></script>
+
+</body>
+</html>
