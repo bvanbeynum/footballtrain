@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+
+  footballtrain:
+    image: trainweb
+    ports:
+      - "80:8080"
+    volumes:
+      - ./sitefiles:/usr/src/web
+      - /usr/src/web/node_modules
