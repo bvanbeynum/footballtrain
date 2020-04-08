@@ -18,10 +18,10 @@ app.use(busboy());
 
 // Routes =======================================================================
 
-app.post("/upload", (request, response) => {
+app.post("/uploadvideo", (request, response) => {
 	
 	request.busboy.on("file", (fieldName, file, fileName) => {
-		file.pipe(fs.createWriteStream(path.join(app.get("root"), "server/upload/" + fileName)));
+		file.pipe(fs.createWriteStream(path.join(app.get("root"), "server/video/" + fileName)));
 	});
 	request.busboy.on("finish", () => {
 		response.status(200).json({status: "ok"});
@@ -30,34 +30,12 @@ app.post("/upload", (request, response) => {
 	request.pipe(request.busboy);
 });
 
-app.get("/api/categories", (request, response) => {
-	var categories = [];
-	
-	fs.readdir(path.join(app.get("root"), "server/upload"), (error, files) => {
-		
-		var match;
-		files.forEach((file) => {
-			match = String(file).match(/^[^_]+_[\d]+_([^_]+)/i);
-			
-			if (match && match[1] != "category" && !categories.some((existing) => existing == match[1])) {
-				categories.push(match[1]);
-			}
-		});
-		
-		categories.sort((prev, next) => {
-			return prev < next ? -1 : 1;
-		});
-		
-		response.status(200).json({ categories: categories });
-	});
-});
-
 app.post("/api/imagecategory", (request, response) => {
 	var file = request.body.image, 
 		newCategory = request.body.category,
 		newFile = file.replace(/_category/i, "_" + newCategory);
 	
-	fs.rename(path.join(app.get("root"), "server/upload/" + file), path.join(app.get("root"), "server/upload/" + newFile), (error) => {
+	fs.rename(path.join(app.get("root"), "server/frame/" + file), path.join(app.get("root"), "server/frame/" + newFile), (error) => {
 		if (error) {
 			response.status(501).json({ error: error.message });
 		}
@@ -69,11 +47,10 @@ app.post("/api/imagecategory", (request, response) => {
 
 app.get("/api/nextimage", (request, response) => {
 	
-	fs.readdir(path.join(app.get("root"), "server/upload"), (error, files) => {
+	fs.readdir(path.join(app.get("root"), "server/frame"), (error, files) => {
 		
 		var match, images = [], complete = 0;
 		for (var file of files) {
-			console.log(file);
 			match = String(file).match(/^([^_]+)_([\d]+)_([^\.]+).jpg/i);
 			
 			if (match && match[3] == "category") {
@@ -110,7 +87,7 @@ app.get("/api/nextimage", (request, response) => {
 
 app.get("/api/allimages", (request, response) => {
 	
-	fs.readdir(path.join(app.get("root"), "server/upload"), (error, files) => {
+	fs.readdir(path.join(app.get("root"), "server/frame"), (error, files) => {
 		
 		var match, images = [];
 		for (var file of files) {
@@ -141,13 +118,12 @@ app.get("/api/allimages", (request, response) => {
 });
 
 app.delete("/image/*.jpg", (request, response) => {
-	console.log(path.join(app.get("root"), "/server/upload/" + request.url.substring(7, request.url.length)));
-	fs.stat(path.join(app.get("root"), "/server/upload/" + request.url.substring(7, request.url.length)), (error) => {
+	fs.stat(path.join(app.get("root"), "/server/frame/" + request.url.substring(7, request.url.length)), (error) => {
 		if (error) {
 			response.status(404).send("File not found");
 		}
 		else {
-			fs.unlink(path.join(app.get("root"), "/server/upload/" + request.url.substring(7, request.url.length)), (error) => {
+			fs.unlink(path.join(app.get("root"), "/server/frame/" + request.url.substring(7, request.url.length)), (error) => {
 				if (error) {
 					console.log(error);
 					response.status(501).json({ error: error.message });
@@ -166,7 +142,7 @@ app.get("/", (request, response) => {
 });
 
 app.get("/image/*.jpg", (request, response) => {
-	response.sendFile("/server/upload/" + request.url.substring(7, request.url.length), { root: app.get("root") });
+	response.sendFile("/server/frame/" + request.url.substring(7, request.url.length), { root: app.get("root") });
 });
 
 app.get("/index.js", function(request, response) {

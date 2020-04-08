@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+
+  footballpython:
+    image: pythonvideo
+    volumes: 
+    - ./python:/usr/src/scripts
+    - ../web/sitefiles/server:/usr/src/files

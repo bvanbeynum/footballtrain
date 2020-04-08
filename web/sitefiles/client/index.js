@@ -12,6 +12,8 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 	$scope.showNewCategory = false;
 	$scope.currentImage = null;
 	
+	$scope.upload = { queue: [], error: [], complete: [] };
+	
 	$http({url: "/api/nextimage"}).then((response) => {
 		$scope.currentImage = response.data.image;
 		$scope.imagesRemain = response.data.remain;
@@ -27,13 +29,6 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 		}
 		
 	});
-	
-	// $http({url: "/api/categories"}).then((response) => {
-	// 	$scope.categories = response.data.categories;
-	// }, (error) => {
-	// 	console.log(error);
-	// 	$scope.showError(error);
-	// });
 	
 	$scope.saveCategory = () => {
 		$scope.categories.push($scope.newCategory);
@@ -61,14 +56,6 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 				
 			});
 			
-			// Update categories
-			// $http({url: "/api/categories"}).then((response) => {
-			// 	$scope.categories = response.data.categories;
-			// }, (error) => {
-			// 	console.log(error);
-			// 	$scope.showError(error);
-			// });
-	
 		}, (error) => {
 			console.log(error);
 			$scope.showError(error);
@@ -122,21 +109,37 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 		
 		console.log("dropped: " + files.length);
 		
-		var formUpload = new FormData();
+		$scope.upload.queue = Array.from(files);
+		$scope.upload.error = [];
+		$scope.upload.complete = [];
 		
-		for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
-			formUpload.append("file", files[fileIndex]);
-		}
+		uploadVideo();
 		
-		$http({url: "/upload", method: "post", headers: { "Content-Type": undefined }, data: formUpload }).then(
-			function (response) {
-				console.log("completed");
-				console.log(response);
-			}, function (error) {
-				console.log("error");
-				console.log(error);
-			});
 	};
+	
+	function uploadVideo() {
+		var formUpload = new FormData();
+		formUpload.append("file", $scope.upload.queue[0]);
+		
+		$http({url: "/uploadvideo", method: "post", headers: { "Content-Type": undefined }, data: formUpload }).then(
+			function (response) {
+				var uploadedFile = $scope.upload.queue.shift();
+				$scope.upload.complete.push(uploadedFile);
+				
+				if ($scope.upload.queue.length > 0) {
+					uploadVideo();
+				}
+			}, function (error) {
+				console.log(error);
+				
+				var uploadedFile = $scope.upload.queue.shift();
+				$scope.upload.error.push(uploadedFile);
+				
+				if ($scope.upload.queue.length > 0) {
+					uploadVideo();
+				}
+			});
+	}
 	
 });
 

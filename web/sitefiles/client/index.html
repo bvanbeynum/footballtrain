@@ -102,6 +102,9 @@ body {
 <div class="statsContainer">
 	<div class="stat">remaining: {{imagesRemain}}</div>
 	<div class="stat">complete: {{imagesComplete}}</div>
+	<div class="stat">upload queue: {{upload.queue.length}}</div>
+	<div class="stat">upload complete: {{upload.complete.length}}</div>
+	<div class="stat">upload error: {{upload.error.length}}</div>
 </div>
 
 <img class="imageClassify" ng-src="/image/{{currentImage}}" ng-show="currentImage.length > 0" />
