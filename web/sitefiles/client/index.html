@@ -32,6 +32,7 @@ body {
 .statsContainer {
 	position: absolute;
 	display: flex;
+	z-index: 2;
 }
 
 .stat {
@@ -102,9 +103,7 @@ body {
 <div class="statsContainer">
 	<div class="stat">remaining: {{imagesRemain}}</div>
 	<div class="stat">complete: {{imagesComplete}}</div>
-	<div class="stat">upload queue: {{upload.queue.length}}</div>
-	<div class="stat">upload complete: {{upload.complete.length}}</div>
-	<div class="stat">upload error: {{upload.error.length}}</div>
+	<div class="stat">frame: {{frame}}</div>
 </div>
 
 <img class="imageClassify" ng-src="/image/{{currentImage}}" ng-show="currentImage.length > 0" />

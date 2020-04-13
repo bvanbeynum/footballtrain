@@ -149,6 +149,14 @@ app.get("/index.js", function(request, response) {
 	response.sendFile("/client/index.js", { root: app.get("root") });
 });
 
+app.get("/tagging", (request, response) => {
+	response.sendFile("/client/tagging.html", { root: app.get("root") });
+});
+
+app.get("/tagging.js", function(request, response) {
+	response.sendFile("/client/tagging.js", { root: app.get("root") });
+});
+
 app.get("*", (request, response) => {
 	response.status(404).send("Invalid path: " + request.path);
 	response.end();

@@ -18,6 +18,8 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 		$scope.currentImage = response.data.image;
 		$scope.imagesRemain = response.data.remain;
 		$scope.imagesComplete = response.data.complete;
+		
+		$scope.frame = $scope.currentImage.match(/_([^_]+)_/i)[1];
 	}, (error) => {
 		
 		if (error.status == 404) {
@@ -44,6 +46,8 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 				$scope.currentImage = response.data.image;
 				$scope.imagesRemain = response.data.remain;
 				$scope.imagesComplete = response.data.complete;
+				
+				$scope.frame = $scope.currentImage.match(/_([^_]+)_/i)[1];
 			}, (error) => {
 				
 				if (error.status == 404) {
