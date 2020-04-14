@@ -48,7 +48,7 @@ for index, (file, frames) in enumerate(files.items()):
 			print("error" + str(categories[prevFrame["category"]]) + " / " + str(categories[frame["category"]]) + " - " + str(maxCategory))
 			print("\thttp://huntingtonbeach.beynum.com/image/" + file + "_" + prevFrame["frame"] + "_" + prevFrame["category"] + ".jpg")
 			print("\thttp://huntingtonbeach.beynum.com/image/" + file + "_" + frame["frame"] + "_" + frame["category"] + ".jpg")
-			print("\tmv /home/bvanbeynum/footballtrain/web/sitefiles/server/frame/" + file + "_" + frame["frame"] + "_" + frame["category"] + ".jpg /home/bvanbeynum/footballtrain/web/sitefiles/server/frame/" + file + "_" + frame["frame"] + "_" + prevFrame["category"] + ".jpg")
+			print("\tmv /home/bvanbeynum/footballtrain/web/sitefiles/server/frame/" + file + "_" + prevFrame["frame"] + "_" + prevFrame["category"] + ".jpg /home/bvanbeynum/footballtrain/web/sitefiles/server/frame/" + file + "_" + prevFrame["frame"] + "_" + frame["category"] + ".jpg")
 			
 			maxCategory = categories[frame["category"]]
 		
