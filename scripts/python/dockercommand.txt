@@ -1,0 +1,15 @@
+docker run --rm --name traindev `
+-v d:\Documents\Code\footballtrain\scripts\python:/working/scripts `
+-v d:\Documents\Code\footballtrain\scripts\frames:/working/frames `
+pythontrain
+
+docker run --rm -d -p 8888:8888 --name trainnotebook `
+-v d:\Documents\Code\footballtrain\scripts\python:/working/scripts `
+-v d:\Documents\Code\footballtrain\scripts\frames:/working/frames `
+-v d:\Documents\Code\footballtrain\scripts\notebook:/working/notebook `
+pythontrain bash -c "jupyter notebook --notebook-dir=/working/notebook --ip='*' --port=8888 --no-browser --allow-root"
+
+docker run -i -t -p 8888:8888 continuumio/miniconda:latest /bin/bash -c "/opt/conda/bin/conda install jupyter -y --quiet && mkdir /opt/notebooks && /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='*' --port=8888 --no-browser"
+
+
+docker run --rm -d --name notebook -p 8888:8888 pythontrain bash -c "jupyter notebook --notebook-dir=/working/notebook --ip='*' --port=8888 --no-browser --allow-root"

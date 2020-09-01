@@ -1,14 +1,15 @@
 FROM python:3.8
 
-RUN apt-get update
-
-RUN pip install numpy
-RUN pip install matplotlib
-RUN pip install opencv-python
-RUN pip install tensorflow
-
 RUN mkdir /working
 
 WORKDIR /working
+
+RUN apt-get update
+
+run python -m pip install --upgrade pip
+RUN pip install numpy
+RUN pip install matplotlib
+RUN pip install tensorflow
+RUN pip install sklearn
 
 CMD ["python"]
