@@ -1,0 +1,2 @@
+Images	Resized	Accuracy	Validation
+163	1	0.98392075	0.71011746

@@ -1,0 +1,2 @@
+Images	Resized	Accuracy	Validation
+60	1	0.9908056	0.7346939

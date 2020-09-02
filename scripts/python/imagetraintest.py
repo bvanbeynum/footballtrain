@@ -21,7 +21,7 @@ files = []
 plt.ioff()
 
 validationSplit = 0.3
-epocs = 12
+epocs = 25
 fileSize = (192,256)
 batchSize = 20
 nodes = 32
@@ -77,11 +77,12 @@ for file in os.listdir(frameDir):
 print(str(round(time.time() - startTime)) + ": Files - " + str(len(files)))
 
 sampleSize = 10
-while sampleSize < len(files):
+while sampleSize <= len(files):
 	images = []
 	labels = []
 
 	randomFiles = random.sample(files, sampleSize)
+	# randomFiles = files
 
 	# ************************** Resized Files ************************** 
 
@@ -102,7 +103,7 @@ while sampleSize < len(files):
 	print(str(round(time.time() - startTime)) + ": ****** Resized Files - " + str(sampleSize))
 	print("")
 
-	imagesTrain, imagesTest, labelsTrain, labelsTest = train_test_split(images, labels, test_size=validationSplit, random_state=0)
+	imagesTrain, imagesTest, labelsTrain, labelsTest = train_test_split(images, labels, test_size=validationSplit, random_state=0, stratify=labels)
 	
 	imagesTrain = np.array(imagesTrain)
 	imagesTest = np.array(imagesTest)
@@ -126,48 +127,49 @@ while sampleSize < len(files):
 	print(str(round(time.time() - startTime)) + ": ****** Finished resized - " + str(sampleSize) + " - accuracy: " + str(results.history["accuracy"][len(results.history["accuracy"]) - 1]) + " - validation: " + str(results.history["val_accuracy"][len(results.history["val_accuracy"]) -1]))
 
 	# ************************** Full Size Files ************************** 
-	# images = []
-	# labels = []
+	images = []
+	labels = []
 
-	# for file in randomFiles:
-	# 	for frame in file["frames"]:
-	# 		image = load_img(frame["path"])
+	for file in randomFiles:
+		for frame in file["frames"]:
+			image = load_img(frame["path"])
 
-	# 		imageArray = img_to_array(image)
-	# 		imageArray = imageArray / 255.0
-	# 		imageArray = np.array(imageArray)
+			imageArray = img_to_array(image)
+			imageArray = imageArray / 255.0
+			imageArray = np.array(imageArray)
 			
-	# 		images.append(imageArray)
-	# 		labels.append(categories.index(frame["category"]))
+			images.append(imageArray)
+			labels.append(categories.index(frame["category"]))
 
-	# model = buildModel(imageArray.shape)
+	model = buildModel(imageArray.shape)
 
-	# print("")
-	# print(str(round(time.time() - startTime)) + ": ****** Full Size Files - " + str(sampleSize))
-	# print("")
+	print("")
+	print(str(round(time.time() - startTime)) + ": ****** Full Size Files - " + str(sampleSize))
+	print("")
 
-	# imagesTrain, imagesTest, labelsTrain, labelsTest = train_test_split(images, labels, test_size=validationSplit, random_state=0)
+	imagesTrain, imagesTest, labelsTrain, labelsTest = train_test_split(images, labels, test_size=validationSplit, random_state=0, stratify=labels)
 	
-	# imagesTrain = np.array(imagesTrain)
-	# imagesTest = np.array(imagesTest)
-	# labelsTrain = np.array(labelsTrain)
-	# labelsTest = np.array(labelsTest)
+	imagesTrain = np.array(imagesTrain)
+	imagesTest = np.array(imagesTest)
+	labelsTrain = np.array(labelsTrain)
+	labelsTest = np.array(labelsTest)
 
-	# results = model.fit(imagesTrain, labelsTrain, epochs=epocs, batch_size=batchSize, validation_data=(imagesTest, labelsTest))
+	results = model.fit(imagesTrain, labelsTrain, epochs=epocs, batch_size=batchSize, validation_data=(imagesTest, labelsTest))
 
-	# predictions = model.predict(imagesTest)
-	# matrix = metrics.confusion_matrix(labelsTest, predictions.argmax(axis=1))
+	predictions = model.predict(imagesTest)
+	matrix = metrics.confusion_matrix(labelsTest, predictions.argmax(axis=1))
 	
-	# metrics.ConfusionMatrixDisplay(confusion_matrix=matrix, display_labels=categories).plot()
-	# plt.savefig("trainlog/imagepic_" + str(len(images)) + "-full-" + str(int(time.time())) + ".png", bbox_inches="tight")
-	# plt.close()
+	metrics.ConfusionMatrixDisplay(confusion_matrix=matrix, display_labels=categories).plot()
+	plt.savefig("trainlog/imagepic_" + str(len(images)) + "-full-" + str(int(time.time())) + ".png", bbox_inches="tight")
+	plt.close()
 
-	# saveFile = open(saveFileName, "a")
-	# saveFile.write(str(sampleSize) + "\t0\t" + str(results.history["accuracy"][len(results.history["accuracy"]) - 1]) + "\t" + str(results.history["val_accuracy"][len(results.history["val_accuracy"]) -1]))
-	# saveFile.close()
+	saveFile = open(saveFileName, "a")
+	saveFile.write(str(sampleSize) + "\t0\t" + str(results.history["accuracy"][len(results.history["accuracy"]) - 1]) + "\t" + str(results.history["val_accuracy"][len(results.history["val_accuracy"]) -1]))
+	saveFile.close()
 
-	# print("")
-	# print(str(round(time.time() - startTime)) + ": ****** Finished full sized - " + str(sampleSize) + " - accuracy: " + str(results.history["accuracy"][len(results.history["accuracy"]) - 1]) + " - validation: " + str(results.history["val_accuracy"][len(results.history["val_accuracy"]) -1]))
+	print("")
+	print(str(round(time.time() - startTime)) + ": ****** Finished full sized - " + str(sampleSize) + " - accuracy: " + str(results.history["accuracy"][len(results.history["accuracy"]) - 1]) + " - validation: " + str(results.history["val_accuracy"][len(results.history["val_accuracy"]) -1]))
 
 	sampleSize += 10
 	
+print("done")
