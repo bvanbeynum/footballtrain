@@ -105,7 +105,5 @@ dist
 
 web/sitefiles/server/frame/*.jpg
 web/sitefiles/server/video/*.mp4
-scripts/frames/*.jpg
+scripts/frames/*
 scripts/videos/*
-scripts/frames/run
-.venv
