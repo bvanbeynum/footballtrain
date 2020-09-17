@@ -16,15 +16,24 @@ import matplotlib.pyplot as plt
 
 startTime = time.time()
 categories = ["start", "qb", "player", "air", "ground", "missing"]
-frameDir = "../frames/run"
+categories2 = [
+	{"category": "start", "frames": []},
+	{"category": "qb", "frames": []},
+	{"category": "player", "frames": []},
+	{"category": "air", "frames": []},
+	{"category": "ground", "frames": []},
+	{"category": "missing", "frames": []}
+	]
+frameDir = "../frames"
 files = []
 plt.ioff()
 modelNumber = str(int(time.time()))
+frameCount = 0
 
-framesCount = 100
+framesCount = 10
 validationSplit = 0.3
 epocs = 12
-fileSize = (480,640)
+fileSize = (320,240)
 batchSize = 60
 nodes = 32
 cnnLayers = 3
@@ -38,15 +47,20 @@ for file in os.listdir(frameDir):
 	if fileRE:
 		fileName = fileRE.group(1)
 		frame = fileRE.group(2)
-		category = fileRE.group(3)
+		fileCategory = fileRE.group(3)
 		
 		existing = list(filter(lambda file: file["name"] == fileName, files))
 		if len(existing) > 0:
-			existing[0]["frames"].append({ "path": os.path.join(frameDir, file), "category": category })
+			existing[0]["frames"].append({ "path": os.path.join(frameDir, file), "category": fileCategory })
 		else:
-			files.append({ "name": fileName, "frames": [{ "path": os.path.join(frameDir, file), "category": category }]})
+			files.append({ "name": fileName, "frames": [{ "path": os.path.join(frameDir, file), "category": fileCategory }]})
 
-print(str(round(time.time() - startTime)) + ": Files - " + str(len(files)))
+		category = list(filter(lambda category: category["category"] == fileCategory, categories2))
+		category[0]["frames"].append(os.path.join(frameDir, file))
+
+		frameCount += 1
+
+print(str(round(time.time() - startTime)) + ": Files - " + str(len(files)) + " frames: " + str(frameCount))
 
 images = []
 labels = []
