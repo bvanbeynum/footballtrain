@@ -21,7 +21,7 @@ files = []
 plt.ioff()
 
 validationSplit = 0.3
-epocs = 25
+epocs = 12
 fileSize = (192,256)
 batchSize = 20
 nodes = 32
@@ -76,7 +76,7 @@ for file in os.listdir(frameDir):
 
 print(str(round(time.time() - startTime)) + ": Files - " + str(len(files)))
 
-sampleSize = 10
+sampleSize = 100
 while sampleSize <= len(files):
 	images = []
 	labels = []
@@ -160,7 +160,7 @@ while sampleSize <= len(files):
 	matrix = metrics.confusion_matrix(labelsTest, predictions.argmax(axis=1))
 	
 	metrics.ConfusionMatrixDisplay(confusion_matrix=matrix, display_labels=categories).plot()
-	plt.savefig("trainlog/imagepic_" + str(len(images)) + "-full-" + str(int(time.time())) + ".png", bbox_inches="tight")
+	plt.savefig("trainlog/imagepic_" + str(len(sampleSize)) + "-full-" + str(int(time.time())) + ".png", bbox_inches="tight")
 	plt.close()
 
 	saveFile = open(saveFileName, "a")
