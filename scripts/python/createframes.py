@@ -22,6 +22,6 @@ for index, file in enumerate(files):
 	print(str(round(time.time() - startTime)) + ": Processing file " + str(index) + ", " + file["fileName"])
 	subprocess.run("ffmpeg -i " + videoDir + file["file"] + " -vf \"scale=1024:768, fps=2\" " + frameDir + file["fileName"] + "_%d_category.jpg", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 	
-	os.remove(videoDir + file["file"])
+	# os.remove(videoDir + file["file"])
 
 print(str(round(time.time() - startTime)) + ": Done!")
