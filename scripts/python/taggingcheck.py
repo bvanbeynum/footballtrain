@@ -8,8 +8,7 @@ categories = {
 	"start": 1,
 	"qb": 2,
 	"air": 3,
-	"player": 3,
-	"end": 4
+	"player": 3
 }
 
 # files["test1"] = [{"a": 1, "b": 2}, {"a": 3, "b": 4}]
@@ -38,7 +37,7 @@ for index, (file, frames) in enumerate(files.items()):
 	prevFrame = None
 	
 	for index, frame in enumerate(frames):
-		if frame["category"] == "other":
+		if frame["category"] in ["missing", "ground"]:
 			continue
 		
 		elif categories[frame["category"]] > maxCategory:

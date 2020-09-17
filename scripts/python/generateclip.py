@@ -12,7 +12,7 @@ import subprocess
 import math
 
 startTime = time.time()
-categories = ["start", "qb", "player", "air", "end", "other"]
+categories = ["start", "qb", "player", "air", "ground", "missing"]
 videoDir = "../videos"
 workingDir = videoDir + "/working"
 modelFolder = "trainlog/model_1599192785"

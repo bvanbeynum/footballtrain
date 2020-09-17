@@ -13,7 +13,7 @@ import random
 import numpy as np
 
 startTime = time.time()
-categories = ["start", "qb", "player", "air", "end", "other"]
+categories = ["start", "qb", "player", "air", "ground", "missing"]
 frameDir = "../frames"
 modelFolder = "trainlog\model_1599192785"
 files = []

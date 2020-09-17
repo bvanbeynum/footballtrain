@@ -15,7 +15,7 @@ import random
 import matplotlib.pyplot as plt
 
 startTime = time.time()
-categories = ["start", "qb", "player", "air", "end", "other"]
+categories = ["start", "qb", "player", "air", "ground", "missing"]
 frameDir = "../frames/run"
 files = []
 plt.ioff()

@@ -12,7 +12,7 @@ import re
 import random
 
 startTime = time.time()
-categories = ["start", "qb", "player", "air", "end", "other"]
+categories = ["start", "qb", "player", "air", "ground", "missing"]
 files = []
 images = []
 labels = []
