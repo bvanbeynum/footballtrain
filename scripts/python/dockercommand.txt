@@ -2,3 +2,5 @@ docker run --rm --name traindev `
 -v d:\Documents\Code\footballtrain\scripts\python:/working/scripts `
 -v d:\Documents\Code\footballtrain\scripts\frames:/working/frames `
 pythontrain
+
+docker run --rm --name video -v /home/bvanbeynum/footballtrain/web/sitefiles/server/video:/usr/src/files/video -v /home/bvanbeynum/footballtrain/web/sitefiles/server/frame:/usr/src/files/frame pythonvideo
