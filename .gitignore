@@ -103,7 +103,7 @@ dist
 # TernJS port file
 .tern-port
 
-web/sitefiles/server/frame/*.jpg
-web/sitefiles/server/video/*.mp4
+web/sitefiles/server/frame/*
+web/sitefiles/server/video/*
 scripts/frames/*
 scripts/videos/*
