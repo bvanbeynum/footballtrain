@@ -8,7 +8,7 @@ trainingApp.controller("trainingCtl", ($scope, $http, $window) => {
 	log.scope = $scope;
 	log.http = $http;
 	
-	$scope.categories = ["start", "qb", "air", "player", "other"];
+	$scope.categories = ["start", "qb", "air", "player", "ground", "missing"];
 	$scope.showNewCategory = false;
 	$scope.currentImage = null;
 	
